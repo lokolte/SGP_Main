@@ -92,4 +92,4 @@ TEMPLATE_DIRS = (
 )
 
 ## Clase que manejara la autenticacion
-AUTH_USER_MODEL = 'SGP_v1.Account'
+AUTH_USER_MODEL = 'SGP_v1.Usuario'

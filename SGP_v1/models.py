@@ -1,79 +1,81 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 # Create your models here.
 
-"""El manager del Account, que es necesario para instanciarlo (cosas de django)"""
-from django.contrib.auth.models import BaseUserManager
-
-class AccountManager(BaseUserManager):
+class UsuarioManager(BaseUserManager):
     def create_user(self, username, password=None, **kwargs):
         if not username:
-            raise ValueError('Users must have a valid username.')
+            raise ValueError('Debe existir un nombre de usuario')
 
         if not kwargs.get('email'):
-            raise ValueError('Users must have a valid email address.')
+            raise ValueError('Debe tener una direccion de correo valida')
 
-        account = self.model(
-            username=username, email=self.normalize_email(kwargs.get('email'))
+        if not kwargs.get('nombre'):
+            raise ValueError('El usuario debe tener un nombre')
+
+        if not kwargs.get('apellido'):
+            raise ValueError('El usuario debe tener un apellido')
+
+        usuario = self.model(
+            username=username,
+            email=self.normalize_email(kwargs.get('email')),
+            nombre=kwargs.get('nombre'),
+            apellido=kwargs.get('apellido')
         )
 
-        account.set_password(password)
-        account.save()
+        usuario.set_password(password)
+        usuario.save()
 
-        return account
+        return usuario
 
-    def create_superuser(self, username, password, **kwargs):
-        account = self.create_user(username, password, **kwargs)
+    def create_superuser(self, username, password=None, **kwargs):
+        usuario = self.create_user(username, password, **kwargs)
+        usuario.is_admin=True
+        usuario.save()
+        return usuario
 
-        account.is_admin = True
-        account.save()
+    def crear_cliente(self, username, password=None, **kwargs):
+        usuario = self.create_user(username, password, **kwargs)
+        usuario.tipo='CLIENTE'
+        usuario.save()
+        return usuario
 
-        return account
+    def crear_empleado(self, username, password=None, **kwargs):
+        usuario = self.create_user(username, password, **kwargs)
+        usuario.tipo='EMPLEADO'
+        usuario.save()
+        return usuario
 
-
-"""La clase account sera la clase de nuestras cuentas"""
-from django.contrib.auth.models import AbstractBaseUser
-from django.db import models
-
-class Account(AbstractBaseUser):
-    email = models.EmailField(unique=True)
+class Usuario(AbstractBaseUser):
     username = models.CharField(max_length=40, unique=True)
-    """ blank = true significa que hace opcional al atributo, ojo con eso"""
-    first_name = models.CharField(max_length=40, blank=True)
-    last_name = models.CharField(max_length=40, blank=True)
-    tagline = models.CharField(max_length=140, blank=True)
 
-    is_scrumMaster = models.BooleanField(default=False)
+    nombre = models.CharField(max_length=40, blank=True)
+    apellido = models.CharField(max_length=40, blank=True)
+    email = models.EmailField(unique=True)
+    telefono = models.CharField(max_length=15, blank=True)
+    direccion = models.CharField(max_length=50, blank=True)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    tipo = models.CharField(max_length=23)
 
-    objects = AccountManager()
+    activo = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
 
-    """USERNAME_FIELD = 'email' establece a email como campo utilizado para la autenticacion"""
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+
+    objects = UsuarioManager()
+
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
-    """ REQUIRED_FIELDS = ['username'] """
+    REQUIRED_FIELDS = [username, email, nombre, apellido]
 
     def __unicode__(self):
         return self.username
 
-    def get_full_name(self):
-        return ' '.join([self.first_name, self.last_name])
+    def get_nombre_completo(self):
+        return ''.join([self.nombre, self.apellido])
 
-    def get_short_name(self):
-        return self.first_name
-
-""" una vez terminado se debe ejecutar python manage.py createsuperuser para crear un super user """
-""" para confirmar que se haya creado, ejecutar en la terminal python manage.py shell
- y en el shell:
- from SGP_v1.models import Account
- a = Account.objects.latest('created_at')
-
- a
- a.email
- a.username
-
- """
+    def get_nombre(self):
+        return self.nombre
 
 
