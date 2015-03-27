@@ -2,15 +2,15 @@ from django.contrib.auth import update_session_auth_hash
 
 from rest_framework import serializers
 
-from SGP_v1.models import Account
+from SGP_v1.models import Usuario
 
 
-class AccountSerializer(serializers.ModelSerializer):
+class UsuarioSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
     confirm_password = serializers.CharField(write_only=True, required=False)
 
     class Meta:
-        model = Account
+        model = Usuario
         fields = ('id', 'email', 'username', 'created_at', 'updated_at',
                   'first_name', 'last_name', 'tagline', 'password',
                   'confirm_password',)
