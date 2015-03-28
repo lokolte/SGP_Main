@@ -7,3 +7,16 @@ class IsAccountOwner(permissions.BasePermission):
             return account == request.user
         return False
 
+class EsCliente(permissions.BasePermission):
+    def has_permission(self, request, view):
+        usuario = request.user
+        if not usuario.tipo:
+            return False
+        return usuario.tipo=='CLIENTE'
+
+class EsEmpleado(permissions.BasePermission):
+    def has_permission(self, request, view):
+        usuario = request.user
+        if not usuario.tipo:
+            return False
+        return usuario.tipo=='EMPLEADO'
