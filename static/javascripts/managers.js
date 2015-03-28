@@ -7,7 +7,7 @@
   angular
     .module('managers', [
       'managers.routes',
-      'managers.authentication'
+      'managers.autentication'
     ]);
 
   angular

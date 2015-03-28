@@ -16,11 +16,16 @@
   */
 
   function config($routeProvider) {
-    $routeProvider
-        .when('/crearusuario', {
-      controller: 'crearusuarioController',
-      controllerAs: 'vm',
-      templateUrl: '/templates/autentication/crearUsuario.html'
-    }).otherwise('/');
+    $routeProvider.when('/crearusuario', {
+       controller: 'crearusuarioController',
+       controllerAs: 'vm',
+       templateUrl: '/templates/autentication/crearUsuario.html'
+  }).when('/login', {
+       controller: 'LoginController',
+       controllerAs: 'vm',
+       templateUrl: '/templates/autentication/login.html'
+  }).otherwise('/');
   }
 })();
+
+
