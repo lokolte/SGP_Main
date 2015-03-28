@@ -20,7 +20,7 @@
         .when('/crearusuario', {
       controller: 'crearusuarioController',
       controllerAs: 'vm',
-      templateUrl: '/static/templates/authentication/crearUsuario.html'
+      templateUrl: '/templates/autentication/crearUsuario.html'
     }).otherwise('/');
   }
 })();

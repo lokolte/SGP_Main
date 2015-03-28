@@ -3,13 +3,13 @@
  */
 /**
 * Authentication
-* @namespace managers.authentication.services
+* @namespace managers.autentication.services
 */
 (function () {
   'use strict';
 
   angular
-    .module('managers.authentication.services')
+    .module('managers.autentication.services')
     .factory('Authentication', Authentication);
 
   Authentication.$inject = ['$cookies', '$http'];
@@ -38,7 +38,7 @@
     * @param {string} password The password entered by the user
     * @param {string} email The email entered by the user
     * @returns {Promise}
-    * @memberOf managers.authentication.services.Authentication
+    * @memberOf managers.autentication.services.Authentication
     */
     function register(username, password, email, nombre, apellido) {
       return $http.post('/api/usuarios/', {
@@ -46,7 +46,7 @@
         password: password,
         email: email,
         nombre: nombre,
-        apellido: apllido
+        apellido: apellido
       });
     }
   }
