@@ -1,10 +1,13 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from rest_framework import routers
+from SGP_v1.views import UsuarioViewSet, IndexView
+
+router = routers.SimpleRouter()
+router.register(r'usuarios', UsuarioViewSet)
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'SGP_Main.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
+    url(r'^api/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
+    url('^.*$', IndexView.as_view(), name='index'),
 )
