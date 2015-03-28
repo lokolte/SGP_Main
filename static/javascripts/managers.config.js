@@ -1,11 +1,8 @@
-/**
- * Created by Jesus Aguilar on 28/03/2015.
- */
 (function () {
   'use strict';
 
   angular
-    .module('managers.config')
+    .module('managers.config', ['managers'])
     .config(config);
 
   config.$inject = ['$locationProvider'];
@@ -15,6 +12,7 @@
   * @desc Enable HTML5 routing
   */
   function config($locationProvider) {
+    console.log('llamada de config?');
     $locationProvider.html5Mode(true);
     $locationProvider.hashPrefix('!');
   }

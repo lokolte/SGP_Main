@@ -110,7 +110,7 @@ function setAuthenticatedUsuario(usuario) {
  * @name unauthenticate
  * @desc Delete the cookie where the user object is stored
  * @returns {undefined}
- * @memberOf thinkster.authentication.services.Authentication
+ * @memberOf managers.autentication.services.Authentication
  */
 function unauthenticate() {
   delete $cookies.authenticatedUsuario;
