@@ -6,6 +6,10 @@ from SGP_v1.models import Usuario
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    '''
+    @cvar UsuarioSerializer: clase que serializa los objetos usuarios
+    @type UsuarioSerializer: ModelSerializer
+    '''
     password = serializers.CharField(write_only=True, required=False)
     confirm_password = serializers.CharField(write_only=True, required=False)
 
