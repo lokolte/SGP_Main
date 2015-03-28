@@ -108,8 +108,6 @@ class Usuario(AbstractBaseUser):
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'nombre', 'apellido']
-    #REQUIRED_FIELDS = ['email']
-
     def __unicode__(self):
         return self.username
 

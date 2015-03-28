@@ -1,9 +1,11 @@
 # coding=utf-8
+from django.core.serializers import json
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework import permissions, viewsets, status
+from django.contrib.auth import authenticate, login
+from rest_framework import permissions, viewsets, status, views
 from rest_framework.response import Response
 from SGP_v1.models import Usuario
 from SGP_v1.permisos import IsAccountOwner
@@ -53,3 +55,29 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 
 
 
+class LoginView(views.APIView):
+    def post(self, request, format=None):
+        data = json.loads(request.body)
+
+        username = data.get('username', None)
+        password = data.get('password', None)
+
+        account = authenticate(email=username, password=password)
+
+        if account is not None:
+            if account.is_active:
+                login(request, account)
+
+                serialized = UsuarioSerializer(account)
+
+                return Response(serialized.data)
+            else:
+                return Response({
+                    'status': 'Unauthorized',
+                    'message': 'Esta cuenta de usuario ha sido deshabilitada'
+                }, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response({
+                'status': 'Unauthorized',
+                'message': 'Nombre de usuario o contraseña inválidos.'
+            }, status=status.HTTP_401_UNAUTHORIZED)
