@@ -13,7 +13,7 @@ class UsuarioManager(BaseUserManager):
         :param username: nombre del usuario del sistema
         @type username: string de 40 caracteres
         :param password: contrasenha del usuario
-        @type password: string agregado por el framework
+        @type password: string heredado del framework
         :param kwargs: otros datos
         :return: usuario
         '''
